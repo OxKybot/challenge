@@ -40,6 +40,12 @@ public class DepositHelper {
         return currentDate.isBefore(expiryDate);
     }
 
+    /**
+     * calculate the balance
+     *
+     * @param set of deposit
+     * @return balance
+     */
     public static int calculateBalance(Set<Deposit> deposits) {
         return deposits.stream()
                 .filter(DepositHelper::isValidDeposit)
