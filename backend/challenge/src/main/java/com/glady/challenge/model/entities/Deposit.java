@@ -1,7 +1,7 @@
 package com.glady.challenge.model.entities;
 
-import com.glady.challenge.model.dto.EnumDepositType;
 import com.glady.challenge.model.dto.DistributeDepositDTO;
+import com.glady.challenge.model.dto.EnumDepositType;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -15,7 +15,7 @@ public class Deposit {
     private long id;
 
     @ManyToOne
-    @JoinColumn(name="user_id", nullable=false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     private EnumDepositType type;

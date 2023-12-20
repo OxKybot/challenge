@@ -1,7 +1,11 @@
 package com.glady.challenge.model.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 public class CompanyDTO {
+    @Schema(name = "Company name", example = "Glady", required = true)
     private String name;
+    @Schema(name = "Company amount", example = "1000", required = true)
     private int amount;
 
     public CompanyDTO() {

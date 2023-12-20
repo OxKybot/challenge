@@ -1,9 +1,15 @@
 package com.glady.challenge.model.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 public class DistributeDepositDTO {
+    @Schema(name = "Company name", example = "Glady", required = true)
     private String CompanyName;
+    @Schema(name = "user username", example = "Arashekian2", required = true)
     private String userName;
+    @Schema(name = "Deposit price", example = "100", required = true)
     private int price;
+    @Schema(name = "deposite type", example = "MEAL", required = true)
     private EnumDepositType depositType;
 
     public DistributeDepositDTO() {

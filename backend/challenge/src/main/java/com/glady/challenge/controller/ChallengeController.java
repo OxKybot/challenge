@@ -40,6 +40,6 @@ public class ChallengeController {
     @GetMapping("/user")
     public UserBalanceDTO getUserBalance(@RequestParam(value = "userName") String userName) {
         int balance = userService.getUserBalance(userName);
-        return new UserBalanceDTO(userName,balance);
+        return new UserBalanceDTO(userName, balance);
     }
 }

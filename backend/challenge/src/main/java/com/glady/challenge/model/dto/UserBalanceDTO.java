@@ -1,7 +1,11 @@
 package com.glady.challenge.model.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 public class UserBalanceDTO {
+    @Schema(name = "user username", example = "arashkian2", required = true)
     private String userName;
+    @Schema(name = "user deposit balance", example = "200", required = true)
     private int balance;
 
     public UserBalanceDTO() {

@@ -24,6 +24,12 @@ public class UserService {
         this.depositRepository = depositRepository;
     }
 
+    /**
+     * find user by username
+     *
+     * @param userName
+     * @return user
+     */
     public User findUserByUserName(String userName) {
         Optional<User> user = userRepository.findById(userName);
         if (user.isPresent()) {
@@ -31,13 +37,26 @@ public class UserService {
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found");
     }
+
+    /**
+     * add deposit to user account
+     *
+     * @param distributeDepositDTO
+     */
     public void addDeposit(DistributeDepositDTO distributeDepositDTO) {
         User user = findUserByUserName(distributeDepositDTO.getUserName());
-        Deposit deposit = new Deposit(distributeDepositDTO,user);
+        Deposit deposit = new Deposit(distributeDepositDTO, user);
         depositRepository.save(deposit);
     }
+
+    /**
+     * create a new user
+     *
+     * @param userDTO
+     * @param company
+     */
     public void createUser(UserDTO userDTO, Company company) {
-        if (canCreateUser(userDTO,company)) {
+        if (canCreateUser(userDTO, company)) {
             User user = new User(userDTO.getUserName(), company);
             userRepository.save(user);
         } else {
@@ -45,17 +64,25 @@ public class UserService {
         }
     }
 
+    /**
+     * create a new user
+     *
+     * @param userDTO
+     * @param company
+     * @return
+     */
     private boolean canCreateUser(UserDTO userDTO, Company company) {
-        return userRepository.findByCompanyAndUserName(company,userDTO.getUserName()).isEmpty();
+        return userRepository.findByCompanyAndUserName(company, userDTO.getUserName()).isEmpty();
     }
 
+    /**
+     * get user balance
+     *
+     * @param userName
+     * @return
+     */
     public int getUserBalance(String userName) {
         User user = findUserByUserName(userName);
-        return user.getDeposits().stream()
-                .filter(DepositHelper::isValidDeposit)
-                .map(Deposit::getPrice)
-                .mapToInt(Integer::intValue)
-                .sum();
-
+        return DepositHelper.calculateBalance(user.getDeposits());
     }
 }

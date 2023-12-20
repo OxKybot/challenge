@@ -21,6 +21,11 @@ public class CompanyService {
         this.userService = userService;
     }
 
+    /**
+     * create a new company
+     *
+     * @param companyDTO
+     */
     public void createCompany(CompanyDTO companyDTO) {
         if (companyRepository.findById(companyDTO.getName()).isPresent()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "company already exist");
@@ -29,11 +34,22 @@ public class CompanyService {
         }
     }
 
+    /**
+     * create a new user
+     *
+     * @param userDTO
+     */
     public void createUser(UserDTO userDTO) {
         Company company = findCompanyByName(userDTO.getCompanyName());
         userService.createUser(userDTO, company);
     }
 
+    /**
+     * find company by name
+     *
+     * @param companyName
+     * @return company
+     */
     public Company findCompanyByName(String companyName) {
         Optional<Company> company = companyRepository.findById(companyName);
         if (company.isEmpty()) {
@@ -43,14 +59,20 @@ public class CompanyService {
         }
     }
 
+    /**
+     * distribute deposit to user
+     *
+     * @param distributeDepositDTO
+     */
     public void distributeDepositToUser(DistributeDepositDTO distributeDepositDTO) {
         Company company = findCompanyByName(distributeDepositDTO.getCompanyName());
+        //determine if the company has a sufficient balance
         if (company.getAmount() >= distributeDepositDTO.getPrice()) {
             userService.addDeposit(distributeDepositDTO);
             company.setAmount(company.getAmount() - distributeDepositDTO.getPrice());
             companyRepository.save(company);
         } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "insufficient company amount");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "company amount exceeded");
         }
     }
 
